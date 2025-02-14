@@ -1,0 +1,81 @@
+body {
+    background-color: darkcyan;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    color: white;
+}
+
+.container {
+    text-align: center;
+}
+
+img {
+    max-width: 100px;
+    margin-bottom: 20px;
+}
+
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.header h1 {
+    margin: 0 10px 0 0;
+}
+
+.header p {
+    margin: 0;
+}
+
+.formID, .mac {
+    margin-bottom: 20px;
+}
+
+input, button {
+    padding: 10px;
+    margin: 5px;
+    border: none;
+    border-radius: 5px;
+}
+
+button {
+    background-color: #005f5f;
+    color: white;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #004747;
+}
+
+.hidden {
+    display: none;
+}
+
+
+
+#macList {
+    margin-top: 20px;
+}
+
+#macList ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+#macList li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+#macList button {
+    margin-left: 10px;
+}

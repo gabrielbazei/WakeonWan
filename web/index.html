@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Wake on Wan</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="script.js" defer></script>
+    <link rel="icon" type="image/png" href="assets/wakeonwan.png">
+</head>
+<body>
+    <div class="container">
+        <img src="assets/wakeonwan.png" alt="Wake on wan logo">
+        <div class="header">
+            <h1>Wake on Wan</h1>
+            <p>Wake up your computer from anywhere</p>
+        </div>
+        <div class="formID">
+            <label for="id">ID</label>
+            <input type="text" name="id" id="id" placeholder="ID" required>
+            <button type="submit" id="savebtn">Save</button>
+        </div>
+        <div class="mac hidden" id="wakeForm">
+            <label id="maclbl">MAC Address</label>
+            <input type="text" name="macName" id="macName" placeholder="Name" required class="disabled">
+            <input type="text" name="macInput" id="macInput" placeholder="00:00:00:00:00:00" required class="disabled">
+            <button type="submit" id="addMacBtn">Add MAC</button>
+        </div>
+        <div id="macList" class="hidden">
+            <h2>Saved MAC Addresses</h2>
+            <ul id="macListUl"></ul>
+        </div>
+    </div>
+</body>
+</html>
