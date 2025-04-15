@@ -1,3 +1,7 @@
+//Este script é responsável por gerenciar a interação do usuário com a interface web, 
+// incluindo o armazenamento local de endereços MAC e nomes, bem como o envio de pacotes mágicos para acordar dispositivos na rede.
+// Ele utiliza o Local Storage do navegador para armazenar os dados e a API Fetch para enviar requisições HTTP.
+// O script é executado quando o DOM é completamente carregado, garantindo que todos os elementos estejam disponíveis para manipulação.
 document.addEventListener('DOMContentLoaded', function() {
     const macInput = document.getElementById('macInput');
     const macNameInput = document.getElementById('macName');
@@ -93,7 +97,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function enviarSinal(id,mac) {
         console.log("Sending magic packet...");
-        var url = 'http://192.168.0.13:5000/id';
+        var url = 'http://192.168.0.3:5000/id';
         fetch(url, {
             method: 'POST',
             headers: {
