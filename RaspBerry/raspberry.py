@@ -1,7 +1,7 @@
 import subprocess,requests,time
 #Troque aqui o ID do raspberry
 id = '1'
-url="http://192.168.0.3:5000"
+url="https://brave-dune-0cf1ace0f.6.azurestaticapps.net"
 url = url + "/id/" + str(id)
 tempo = 2 # Tempo de espera inicial
 def sanitizador(mac):
