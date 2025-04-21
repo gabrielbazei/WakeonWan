@@ -1,24 +1,33 @@
-# Este é um servidor Flask simples que armazena pares de id e mac
-# em memória. Ele possui dois endpoints: um para obter o mac associado a um id
-# e outro para adicionar um novo par id/mac.
-# O endpoint GET /id/<string:id> retorna o mac associado ao id fornecido.
-# Se o id não existir, retorna um código de status 204.
-# O endpoint POST /id adiciona um novo par id/mac. O corpo da requisição deve ser um JSON
-from flask import Flask, request, jsonify
-from flask_cors import CORS
+# Este código é um exemplo de um servidor Flask que armazena IDs e MACs em listas.
+# Ele possui dois endpoints: um para obter um MAC associado a um ID e outro para adicionar um novo ID e MAC.
+from flask import Flask, request, jsonify, make_response
+import os
 app = Flask(__name__)
-CORS(app)
+#O servidor inicializa duas listas vazias: uma para armazenar IDs e outra para armazenar MACs.
 ids = []
 macs = []
+# CORS feito manualmente para aceitar requisições de um domínio específico
+def add_cors_headers(response):
+    response.headers['Access-Control-Allow-Origin'] = 'https://victorious-meadow-05665ef0f.6.azurestaticapps.net/'
+    response.headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS'
+    response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+    return response
+# O servidor possui um endpoint GET que aceita um ID como parâmetro de URL e retorna o MAC associado a esse ID.
+# Se o ID não estiver presente, retorna um código de status 204 (sem conteúdo).
 @app.route('/id/<string:id>', methods=['GET'])
 def get_item(id):
+    print(ids)
     if id in ids:
         temp = jsonify(macs[ids.index(id)])
         del macs[ids.index(id)]
         del ids[ids.index(id)]
-        return temp,201
+        response = make_response(temp, 201)
+        return add_cors_headers(response)
     else:
-        return '', 204
+        response = make_response('', 204)
+        return add_cors_headers(response)
+# O servidor possui um endpoint POST que aceita um JSON contendo um ID e um MAC.
+# Ele adiciona o ID e o MAC às listas correspondentes e retorna um código de status 201 (criado).
 @app.route('/id', methods=['POST'])
 def post_item():
     data = request.json
@@ -26,6 +35,14 @@ def post_item():
     mac = data.get('mac')
     ids.append(id)
     macs.insert(ids.index(id), mac)
-    return '', 201
+    response = make_response('', 201)
+    return add_cors_headers(response)
+# Continuação da configuração CORS para requisições OPTIONS
+@app.after_request
+def after_request(response):
+    # Adiciona cabeçalhos CORS para todas as respostas
+    return add_cors_headers(response)
+# O servidor é executado na porta especificada na variável de ambiente, especifica da azure PORT ou na porta 5000 por padrão.
 if __name__ == '__main__':
-    app.run(host='192.168.0.3', port=5000, debug=False)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=True)
