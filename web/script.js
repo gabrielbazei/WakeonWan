@@ -119,6 +119,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }).then(response => {
             if (response.ok) {
                 console.log("Magic packet sent!");
+                alert("Solicitação enviada com sucesso");
             } else {
                 console.log("Failed to send magic packet!");
             }
