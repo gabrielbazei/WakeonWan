@@ -6,12 +6,6 @@ app = Flask(__name__)
 #O servidor inicializa duas listas vazias: uma para armazenar IDs e outra para armazenar MACs.
 ids = []
 macs = []
-# CORS feito manualmente para aceitar requisições de um domínio específico
-def add_cors_headers(response):
-    response.headers['Access-Control-Allow-Origin'] = 'https://victorious-meadow-05665ef0f.6.azurestaticapps.net/'
-    response.headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS'
-    response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
-    return response
 # O servidor possui um endpoint GET que aceita um ID como parâmetro de URL e retorna o MAC associado a esse ID.
 # Se o ID não estiver presente, retorna um código de status 204 (sem conteúdo).
 @app.route('/id/<string:id>', methods=['GET'])
@@ -22,10 +16,10 @@ def get_item(id):
         del macs[ids.index(id)]
         del ids[ids.index(id)]
         response = make_response(temp, 201)
-        return add_cors_headers(response)
+        return response
     else:
         response = make_response('', 204)
-        return add_cors_headers(response)
+        return response
 # O servidor possui um endpoint POST que aceita um JSON contendo um ID e um MAC.
 # Ele adiciona o ID e o MAC às listas correspondentes e retorna um código de status 201 (criado).
 @app.route('/id', methods=['POST'])
@@ -36,12 +30,7 @@ def post_item():
     ids.append(id)
     macs.insert(ids.index(id), mac)
     response = make_response('', 201)
-    return add_cors_headers(response)
-# Continuação da configuração CORS para requisições OPTIONS
-@app.after_request
-def after_request(response):
-    # Adiciona cabeçalhos CORS para todas as respostas
-    return add_cors_headers(response)
+    return response
 # O servidor é executado na porta especificada na variável de ambiente, especifica da azure PORT ou na porta 5000 por padrão.
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))

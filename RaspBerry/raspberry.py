@@ -47,6 +47,7 @@ def sanitizador(mac):
 # Recebe o MAC Address como parametro e executa o comando WakeOnLan
 def wol(mac):
     mac = mac.strip().replace('"', '') # Remove aspas e espacos desnecessarios
+    mac = mac.replace('-', ':')  # Substitui '-' por ':'
     if sanitizador(mac): # Verifica se o MAC Address e valido
         subprocess.run(["wakeonlan",mac]) # Executa o comando WakeOnLan com o MAC Address
 #MAIN
