@@ -63,6 +63,7 @@ while True:
     try:
         response = requests.get(url) # Faz uma requisicao GET para o servidor
         tempo = 2 # Reseta o tempo de espera
+        #print("response", response.status_code) # Imprime o codigo de status da resposta
         if response.status_code == 201:
             wol(response.text)
     except:
