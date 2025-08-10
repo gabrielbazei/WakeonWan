@@ -15,25 +15,30 @@ document.addEventListener('DOMContentLoaded', function() {
     const addMacBtn = document.getElementById('addMacBtn');
     const macList = document.getElementById('macList');
     const macListUl = document.getElementById('macListUl');
-    console.log("Script loaded");
+    //console.log("Script loaded"); // debug
     // Verifica se já existe um ID salvo no Local Storage e, se sim, preenche o campo de ID e exibe o formulário de wake
     const savedId = localStorage.getItem('id');
     if (savedId) {
+        // se ja existir um ID salvo, preenche o campo de ID
         idInput.value = savedId;
+        //remove a classe 'hidden' do formulário de wake para exibi-lo
         wakeForm.classList.remove('hidden');
     }
     // Adiciona um evento de clique ao botão de salvar ID
     // que salva o ID no Local Storage e exibe o formulário de wake
     // se o ID não estiver vazio
     // Caso contrário, oculta o formulário de wake
-
     saveBtn.addEventListener('click', function(event) {
+        //evita o comportamento padrão do botão de submit
         event.preventDefault();
+        // pega o valor do campo de ID, remove espaços em branco no início e no final
         const id = idInput.value.trim();
         if (id !== '') {
+            // se o ID não estiver vazio, salva no Local Storage
             localStorage.setItem('id', id);
             wakeForm.classList.remove('hidden');
         } else {
+            // se o ID estiver vazio, esconde o formulário de wake
             wakeForm.classList.add('hidden');
         }
     });
@@ -48,24 +53,34 @@ document.addEventListener('DOMContentLoaded', function() {
     // Adiciona um evento de clique ao botão de adicionar MAC
     addMacBtn.addEventListener('click', function(event) {
         event.preventDefault();
+        // pega o nome e mac do campo de entrada, remove espaços em branco no início e no final
         const mac = macInput.value.trim();
         const name = macNameInput.value.trim();
+        // verifica se o MAC e o nome não estão vazios
         if (mac && name) {
+            // chama a função saveMac para salvar o MAC e o nome
             saveMac(mac, name);
+            // exibe a lista de MACs atualizada
             displayMacs();
+            // limpa os campos de entrada
             macInput.value = '';
             macNameInput.value = '';
         }
     });
     // Adiciona um evento de clique ao botão de adicionar MAC
     function saveMac(mac, name) {
+        // pega os endereços MAC armazenados no Local Storage, adiciona o novo MAC e nome à lista
         const macs = getMacs();
+        // adiciona o novo MAC e nome à lista de endereços MAC
         macs.push({ mac, name });
+        //salva a lista atualizada de endereços MAC no Local Storage
         localStorage.setItem('macs', JSON.stringify(macs));
     }
     // Retorna uma lista de endereços MAC armazenados no Local Storage
     function getMacs() {
+        //busca os endereços MAC do Local Storage
         const macs = localStorage.getItem('macs');
+        //se tiver endereços MAC armazenados, converte a string JSON em um objeto JavaScript
         if (macs) {
             return JSON.parse(macs);
         }
@@ -74,10 +89,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // Exibe a lista de endereços MAC armazenados no Local Storage
     // Cada item da lista inclui um botão para acordar o dispositivo e um botão para remover o endereço MAC
     function displayMacs() {
+        // pega os endereços MAC armazenados no Local Storage
         const macs = getMacs();
-        macListUl.innerHTML = '';
-        macs.forEach((macObj, index) => {
+        macListUl.innerHTML = ''; // limpa a lista de endereços MAC
+        macs.forEach((macObj, index) => { // itera sobre cada endereço MAC
+            // cria um novo item de lista para cada endereço MAC
             const li = document.createElement('li');
+            // define o conteúdo do item de lista, incluindo o nome e o endereço MAC
             li.innerHTML = `
                 ${macObj.name} (${macObj.mac})
                 <div class="button-group">
@@ -85,20 +103,27 @@ document.addEventListener('DOMContentLoaded', function() {
                     <button onclick="removeMac(${index})">Remove</button>
                 </div>
             `;
+            // adiciona o item de lista à lista de endereços MAC
             macListUl.appendChild(li);
         });
+        //remove a classe 'hidden' da lista de endereços MAC para exibi-la
         macList.classList.remove('hidden');
     }
     // Adiciona um evento de clique ao botão de acordar dispositivo
     window.wakeMac = function(mac) {
+        // chama a função enviarSinal passando o ID e o endereço MAC
         enviarSinal(idInput.value,mac);
     };
     // Adiciona um evento de clique ao botão de remover endereço MAC
     window.removeMac = function(index) {
+        // pergunta ao usuário se ele tem certeza de que deseja remover o endereço MAC
         if (confirm('Are you sure you want to remove this MAC address?')) {
             const macs = getMacs();
+            // remove o endereço MAC da lista de endereços MAC
             macs.splice(index, 1);
+            // salva a lista atualizada de endereços MAC no Local Storage
             localStorage.setItem('macs', JSON.stringify(macs));
+            // exibe a lista de endereços MAC atualizada
             displayMacs();
         }
     };
@@ -108,24 +133,27 @@ document.addEventListener('DOMContentLoaded', function() {
     // O resultado da requisição é exibido no console, indicando se o pacote mágico foi enviado com sucesso ou não
     // O endpoint utilizado neste caso é um serviço de wake-on-LAN hospedado na Azure, mas pode ser substituído por qualquer outro serviço compatível
     function enviarSinal(id,mac) {
-        console.log("Sending magic packet...");
+        //console.log("Sending magic packet..."); debug
         var url = 'https://wakeonwan-bazei.azurewebsites.net/id';
         fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
+            // Envia o ID e o endereço MAC como um objeto JSON no corpo da requisição
             body: JSON.stringify({ id: id, mac: mac })
         }).then(response => {
             if (response.ok) {
-                console.log("Magic packet sent!");
-                alert("Solicitação enviada com sucesso");
+                //console.log("Magic packet sent!"); debug
+                alert("Solicitação enviada com sucesso"); // Exibe uma mensagem de sucesso ao usuário
             } else {
-                console.log("Failed to send magic packet!");
+                //console.log("Failed to send magic packet!"); debug em caso de falha
             }
         }).catch(error => {
+            //caso haja algum erro na requisição, exibe uma mensagem de erro no console
             console.error('Error:', error);
         });
     }
+    // Exibe a lista de endereços MAC ao carregar a página
     displayMacs();
 });

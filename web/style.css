@@ -1,6 +1,7 @@
 body {
+    /* Estilo para o corpo da página */
     background-color: darkcyan;
-    display: flex;
+    display: flex; /* utiliza flexbox para centralizar o conteúdo */
     justify-content: center;
     align-items: center;
     height: 100vh;
@@ -8,23 +9,23 @@ body {
     font-family: Arial, sans-serif;
     color: white;
 }
-
+/* alinha o conteúdo da página ao centro */
 .container {
     text-align: center;
 }
-
+/* define o estilo para as imagens */
 img {
     max-width: 100px;
     margin-bottom: 20px;
 }
-
+/* define o estilo para o cabeçalho */
 .header {
     display: flex;
     justify-content: center;
     align-items: center;
     margin-bottom: 20px;
 }
-
+/* define o estilo para o título e o parágrafo dentro do cabeçalho */
 .header h1 {
     margin: 0 10px 0 0;
 }
@@ -32,7 +33,7 @@ img {
 .header p {
     margin: 0;
 }
-
+/* define o estilo para os campos de entrada e botões */
 .formID, .mac {
     margin-bottom: 20px;
 }
@@ -53,12 +54,11 @@ button {
 button:hover {
     background-color: #004747;
 }
-
+/* define o estilo para a lista de endereços MAC */
+/* o uso de .hidden permite ocultar elementos quando necessário */
 .hidden {
     display: none;
 }
-
-
 
 #macList {
     margin-top: 20px;
